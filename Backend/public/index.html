@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MinIO Gallery Manager</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>MinIO Gallery Manager</h1>
+        <p class="subtitle">Tugas Object Storage</p>
+      </header>
+
+      <section class="card">
+        <h3 style="margin-top: 0">Upload New Image</h3>
+        <form id="uploadForm">
+          <div class="form-grid">
+            <div class="full-width">
+              <input
+                type="file"
+                id="imageInput"
+                name="file"
+                required
+                accept="image/*"
+              />
+              <small style="color: #666; margin-left: 5px"
+                >Supported: JPG, PNG, GIF</small
+              >
+            </div>
+            <input
+              type="text"
+              name="title"
+              placeholder="Image Title"
+              required
+            />
+            <input
+              type="text"
+              name="location"
+              placeholder="Location (e.g. Jakarta)"
+            />
+            <div class="full-width">
+              <input
+                type="text"
+                name="description"
+                placeholder="Short description..."
+              />
+            </div>
+            <div class="full-width">
+              <input
+                type="text"
+                name="tags"
+                placeholder="Tags (comma separated)"
+              />
+            </div>
+            <div class="full-width" style="margin-top: 10px">
+              <button type="submit" class="btn-primary">Upload to Cloud</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <div class="search-container">
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="Search by title, tag, or description..."
+        />
+        <button
+          onclick="handleSearch()"
+          class="btn-primary"
+          style="width: auto"
+        >
+          Search
+        </button>
+        <button
+          onclick="resetSearch()"
+          class="btn-primary"
+          style="width: auto; background-color: #6b7280"
+        >
+          Reset
+        </button>
+      </div>
+
+      <div id="gallery">
+        <p style="color: #666">Loading library...</p>
+      </div>
+    </div>
+
+    <div id="previewModal" class="modal">
+      <div class="modal-content">
+        <div id="closePreview" class="close">&times;</div>
+
+        <div class="modal-left">
+          <img id="previewImage" src="" alt="Preview" />
+        </div>
+
+        <div class="modal-right">
+          <h2 id="metaTitle" class="meta-title">Title Here</h2>
+
+          <div class="meta-label">Description</div>
+          <div id="metaDescription" class="meta-value">...</div>
+
+          <div class="meta-label">Tags</div>
+          <div id="metaTags" class="meta-value"></div>
+
+          <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0" />
+
+          <div class="meta-label">Location</div>
+          <div id="metaLocation" class="meta-value">-</div>
+
+          <div class="meta-label">File Info</div>
+          <div class="meta-value" style="font-size: 13px; color: #555">
+            <span id="metaMime">JPG</span> • <span id="metaSize">0 KB</span>
+          </div>
+
+          <div class="meta-label">Uploaded At</div>
+          <div id="metaUploadDate" class="meta-value" style="font-size: 13px">
+            -
+          </div>
+
+          <div
+            style="
+              margin-top: auto;
+              padding-top: 25px;
+              display: flex;
+              gap: 10px;
+            "
+          >
+            <button id="downloadBtn" class="btn-primary" style="flex: 2">
+              Download
+            </button>
+            <button id="deleteBtn" class="btn-danger" style="flex: 1">
+              Hapus
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

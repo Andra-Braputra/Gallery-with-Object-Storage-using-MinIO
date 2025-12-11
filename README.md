@@ -45,7 +45,7 @@ Make sure you have Docker Desktop installed and running.
 Open your terminal in the root folder and run:
 Bash
 
-docker-compose up -d --build
+    docker-compose up -d --build
 
 Wait for a few moments for the containers to build and start.
 
