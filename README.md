@@ -43,7 +43,6 @@ Make sure you have Docker Desktop installed and running.
 
 **Run the Application**
 Open your terminal in the root folder and run:
-Bash
 
     docker-compose up -d --build
 
