@@ -1,22 +1,31 @@
+// script.js (modifikasi)
+
 const API_URL = "http://localhost:3000";
 
-// ----------------------------
 // 1. Core Functions
-// ----------------------------
-async function fetchImages(endpoint = "/images") {
+async function fetchImages(endpoint = "/images", searchQuery = null) {
+  // <--- Tambah parameter searchQuery
   const gallery = document.getElementById("gallery");
+  const searchStatus = document.getElementById("searchStatus"); // <--- Ambil elemen searchStatus
+
   gallery.innerHTML =
     '<p style="text-align:center; width:100%;">Updating gallery...</p>';
+  searchStatus.innerHTML = ""; // <--- Kosongkan status saat memuat
 
   try {
     const res = await fetch(`${API_URL}${endpoint}`);
     if (!res.ok) throw new Error("Server error");
 
     const items = await res.json();
-    renderGallery(items);
+    renderGallery(items); // <--- Tampilkan status pencarian setelah berhasil
+
+    if (searchQuery) {
+      searchStatus.innerHTML = `Showing results for: <strong>"${searchQuery}"</strong>`;
+    }
   } catch (err) {
     console.error(err);
     gallery.innerHTML = `<p style='color:red; text-align:center;'>Gagal terhubung ke server (${err.message})</p>`;
+    searchStatus.innerHTML = "";
   }
 }
 
@@ -52,26 +61,28 @@ function renderGallery(items) {
   });
 }
 
-// ----------------------------
 // 2. Search & Filter
-// ----------------------------
 function handleSearch() {
   const query = document.getElementById("searchInput").value.trim();
-  fetchImages(query ? `/search?q=${encodeURIComponent(query)}` : "/images");
+
+  // Teruskan query ke fetchImages
+  if (query) {
+    fetchImages(`/search?q=${encodeURIComponent(query)}`, query);
+  } else {
+    fetchImages("/images", null);
+  }
 }
 
 function resetSearch() {
   document.getElementById("searchInput").value = "";
-  fetchImages("/images");
+  fetchImages("/images", null); // <--- Kirim null untuk query
 }
 
 document.getElementById("searchInput").addEventListener("keypress", (e) => {
   if (e.key === "Enter") handleSearch();
 });
 
-// ----------------------------
 // 3. Upload Handler
-// ----------------------------
 document.getElementById("uploadForm").onsubmit = async (e) => {
   e.preventDefault();
   const btn = e.target.querySelector("button");
@@ -101,9 +112,7 @@ document.getElementById("uploadForm").onsubmit = async (e) => {
   }
 };
 
-// ----------------------------
 // 4. Modal & Delete Logic
-// ----------------------------
 function showMetadataPreview(data) {
   const modal = document.getElementById("previewModal");
 
